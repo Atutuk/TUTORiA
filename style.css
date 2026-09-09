@@ -601,3 +601,124 @@ body.dark-mode .tutorial-step ul {
 body.dark-mode .tutorial-progress {
     color: #cbd5e1;
 }
+
+/* TutorIA visual refresh */
+:root {
+    --ink: #172033;
+    --muted: #657084;
+    --paper: rgba(255, 255, 255, 0.86);
+    --line: rgba(31, 44, 69, 0.12);
+    --accent: #e85d3f;
+    --accent-dark: #c7442a;
+    --mint: #d8f3e5;
+    --lavender: #e9e1ff;
+    --shadow: 0 24px 70px rgba(48, 56, 87, 0.14);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    color: var(--ink);
+    background: #f8f6f1;
+    background-image: radial-gradient(circle at 8% 12%, rgba(232, 93, 63, 0.18) 0 2px, transparent 3px),
+        radial-gradient(circle at 88% 78%, rgba(91, 157, 137, 0.2) 0 2px, transparent 3px),
+        linear-gradient(135deg, #fffaf1 0%, #f4f8f2 52%, #f2efff 100%);
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    z-index: -1;
+    width: 280px;
+    height: 280px;
+    border-radius: 42% 58% 64% 36%;
+    filter: blur(2px);
+    opacity: 0.55;
+    animation: drift 12s ease-in-out infinite alternate;
+}
+
+body::before { top: -100px; right: -80px; background: var(--lavender); }
+body::after { bottom: -130px; left: -90px; background: var(--mint); animation-delay: -4s; }
+
+.hero, .login-wrapper, .menu-shell { width: min(1040px, 100%); position: relative; z-index: 1; }
+.hero { display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 26px; align-items: stretch; }
+.title-box, .content-box { border-radius: 30px; border: 1px solid var(--line); box-shadow: var(--shadow); }
+.title-box { display: flex; flex-direction: column; justify-content: center; min-height: 350px; padding: 48px; text-align: left; background: var(--ink); overflow: hidden; }
+.title-box::after { content: "✦"; position: absolute; right: 32px; bottom: 18px; color: #f7c66a; font-size: 8rem; line-height: 1; opacity: 0.75; transform: rotate(14deg); }
+.title-box h1 { position: relative; z-index: 1; max-width: 420px; font-size: clamp(3rem, 8vw, 6.5rem); line-height: 0.92; letter-spacing: -0.08em; }
+.title-box h1::after { content: "."; color: #f7c66a; }
+.title-box .welcome-badge { position: relative; z-index: 1; align-self: flex-start; margin-bottom: 18px; background: rgba(255,255,255,.12); color: #f7c66a; border: 1px solid rgba(247,198,106,.28); }
+.hero-kicker { position: relative; z-index: 1; margin: 18px 0 0; color: rgba(255,255,255,.7); font-size: 1rem; line-height: 1.5; }
+.section-eyebrow { display: block; margin-bottom: 16px; color: var(--accent-dark); font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.feature-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 22px; }
+.feature-row span { border: 1px solid var(--line); border-radius: 999px; padding: 8px 11px; color: var(--muted); font-size: .76rem; }
+.hero .content-box a { align-self: flex-start; }
+.hero .content-box button span { display: inline-block; margin-left: 8px; transition: transform .2s ease; }
+.hero .content-box button:hover span { transform: translate(3px, -3px); }
+.content-box { background: var(--paper); backdrop-filter: blur(16px); }
+.hero .content-box { display: flex; flex-direction: column; justify-content: center; min-height: 350px; padding: 48px; text-align: left; }
+p { color: var(--muted); font-size: 1.05rem; line-height: 1.75; }
+.hero p { max-width: 620px; font-size: clamp(1.05rem, 2vw, 1.3rem); }
+
+button { border-radius: 999px; background: var(--accent); box-shadow: 0 12px 22px rgba(232, 93, 63, 0.25); transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }
+button:hover { transform: translateY(-3px) rotate(-1deg); background: var(--accent-dark); box-shadow: 0 16px 30px rgba(232, 93, 63, 0.3); }
+.secondary-btn { background: #e9ece8; color: var(--ink); }
+.secondary-btn:hover { background: #dfe7df; box-shadow: 0 10px 20px rgba(48, 56, 87, 0.12); }
+
+.login-wrapper { max-width: 600px; }
+.login-wrapper .title-box { min-height: auto; padding: 28px 36px; text-align: left; background: var(--ink); }
+.login-wrapper .title-box h1 { font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.06em; }
+.login-wrapper .title-box .welcome-badge { margin-bottom: 12px; }
+.login-wrapper .title-box::after { font-size: 4rem; right: 24px; bottom: -4px; }
+.login-box { padding: 34px 38px; gap: 14px; }
+.login-box input { border: 1px solid var(--line); border-radius: 15px; padding: 17px 18px; background: rgba(255,255,255,.72); font-family: inherit; }
+.login-box input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(232, 93, 63, .14); transform: translateY(-1px); }
+.login-box button[type="submit"] { width: 100%; margin-top: 6px; }
+.login-box p { font-size: .95rem; margin: 14px 0 2px; }
+.login-box a { width: 100%; }
+.login-box a button { width: 100%; }
+.remember-me { color: var(--muted); }
+.form-error { border-radius: 14px; }
+
+.theme-toggle-card { background: var(--paper); border: 1px solid var(--line); border-radius: 999px; box-shadow: 0 12px 30px rgba(48, 56, 87, .1); }
+.theme-toggle { background: transparent; box-shadow: none; }
+.theme-toggle:hover { background: transparent; box-shadow: none; transform: none; }
+
+.menu-shell { max-width: 900px; }
+.menu-shell .title-box { min-height: auto; padding: 30px 38px; }
+.tutorial-card { padding: 38px 42px 30px; }
+.welcome-badge { background: var(--mint); border: 0; color: #34735e; }
+.tutorial-card h2 { font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing: -0.05em; }
+.tutorial-step { min-height: 210px; padding-top: 28px; }
+.tutorial-step p { font-size: 1.25rem; color: var(--ink); }
+.tutorial-step ul { list-style: none; padding-left: 0; }
+.tutorial-step li { padding: 10px 14px; border-radius: 12px; background: rgba(216, 243, 229, .5); color: var(--muted); }
+.tutorial-step li::before { content: "↗"; color: var(--accent); font-weight: 700; margin-right: 10px; }
+.tutorial-navigation { border-top-color: var(--line); }
+.tutorial-navigation button { min-width: 150px; }
+
+@keyframes drift { from { transform: translate3d(0, 0, 0) rotate(0); } to { transform: translate3d(18px, -16px, 0) rotate(12deg); } }
+@keyframes reveal { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+.hero, .login-wrapper, .menu-shell { animation: reveal .65s ease both; }
+
+body.dark-mode { background: #141927; background-image: radial-gradient(circle at 10% 10%, rgba(232, 93, 63, .14), transparent 28%), linear-gradient(135deg, #141927, #202333 65%, #17231f); }
+body.dark-mode { --ink: #f7f5ef; --muted: #bac1ce; --paper: rgba(27, 32, 48, .86); --line: rgba(255, 255, 255, .12); --shadow: 0 24px 70px rgba(0, 0, 0, .28); }
+body.dark-mode .login-box input { background: rgba(18, 23, 36, .8); color: #f7f5ef; }
+body.dark-mode .tutorial-step p, body.dark-mode .tutorial-card h2 { color: var(--ink); }
+body.dark-mode .tutorial-step li { background: rgba(52, 115, 94, .2); color: var(--muted); }
+
+@media (max-width: 720px) {
+    body { padding: 22px 14px; }
+    .hero { grid-template-columns: 1fr; gap: 14px; }
+    .title-box, .hero .content-box { min-height: auto; padding: 30px 26px; }
+    .title-box h1 { font-size: clamp(3.6rem, 18vw, 5.5rem); }
+    .hero .content-box { padding: 28px 26px; }
+    .login-box, .tutorial-card { padding: 26px 22px; }
+    .welcome-header { align-items: flex-start; flex-direction: column; }
+    .tutorial-navigation { align-items: stretch; flex-direction: column-reverse; }
+    .tutorial-navigation button { width: 100%; }
+}

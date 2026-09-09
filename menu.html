@@ -13,7 +13,9 @@
 <body class="menu-body">
     <main class="menu-shell">
         <div class="title-box">
+            <span class="welcome-badge">Sua jornada começa aqui</span>
             <h1>Bem-vindo ao TutorIA</h1>
+            <p class="hero-kicker">Cinco passos simples para estudar melhor.</p>
         </div>
 
         <section class="content-box tutorial-card" aria-live="polite">
@@ -169,7 +171,7 @@
                 currentStep += 1;
                 renderStep();
             } else {
-                window.location.href = 'index.html';
+                window.location.replace('index.html');
             }
         });
 
@@ -188,7 +190,7 @@
             showToast('Você saiu da conta.', 'success');
 
             setTimeout(() => {
-                window.location.href = 'login.html';
+                window.location.replace('login.html');
             }, 700);
         });
 

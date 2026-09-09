@@ -14,7 +14,9 @@
 
     <main class="login-wrapper">
         <div class="title-box">
+            <span class="welcome-badge">Seu espaço de evolução</span>
             <h1>Criar conta</h1>
+            <p class="hero-kicker">Monte uma rotina que combina com você.</p>
         </div>
 
         <form id="createAccountForm" class="content-box login-box account-box">
@@ -40,7 +42,7 @@
 
             <p>Já tem uma conta?</p>
 
-            <a href="login.html">
+            <a href="login.html" target="_self">
                 <button class="secondary-btn" type="button">Entrar</button>
             </a>
         </form>
@@ -265,7 +267,7 @@
         showToast('Conta criada com sucesso! Confirme seu e-mail antes de entrar.', 'success');
 
         setTimeout(() => {
-            window.location.href = 'login.html';
+            window.location.replace('login.html');
         }, 1200);
 
     } catch (error) {

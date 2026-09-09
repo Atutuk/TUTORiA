@@ -12,7 +12,9 @@
 
     <main class="login-wrapper">
         <div class="title-box">
+            <span class="welcome-badge">Só mais um detalhe</span>
             <h1>Verificar e-mail</h1>
+            <p class="hero-kicker">Vamos confirmar que este espaço é seu.</p>
         </div>
 
         <form id="verifyForm" class="content-box login-box verify-box">
@@ -29,7 +31,7 @@
 
             <button type="button" class="secondary-btn" id="resendCodeBtn">Reenviar código</button>
 
-            <a href="login.html">
+            <a href="login.html" target="_self">
                 <button class="secondary-btn" type="button">Voltar para login</button>
             </a>
         </form>
@@ -135,7 +137,7 @@
 
             showToast('E-mail verificado com sucesso! Você já pode fazer login.', 'success');
             setTimeout(() => {
-                window.location.href = 'login.html';
+                window.location.replace('login.html');
             }, 900);
         });
 

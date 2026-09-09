@@ -14,7 +14,9 @@
 
     <main class="login-wrapper">
         <div class="title-box">
+            <span class="welcome-badge">Que bom ver você</span>
             <h1>Entrar no TutorIA</h1>
+            <p class="hero-kicker">Retome seu ritmo de estudos.</p>
         </div>
 
         <form id="loginForm" class="content-box login-box">
@@ -31,7 +33,7 @@
 
             <p>Ainda não tem uma conta?</p>
 
-            <a href="create-account.html">
+            <a href="create-account.html" target="_self">
                 <button class="secondary-btn" type="button">Criar conta</button>
             </a>
         </form>
@@ -147,7 +149,7 @@ if (savedRememberedEmail) {
         showToast('Login realizado com sucesso!', 'success');
 
         setTimeout(() => {
-            window.location.href = 'menu.html';
+            window.location.replace('menu.html');
         }, 900);
 
     } catch (error) {
