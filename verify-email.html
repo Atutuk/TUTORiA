@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar e-mail - TutorIA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="login-wrapper">
+        <div class="title-box">
+            <h1>Verificar e-mail</h1>
+        </div>
+
+        <form id="verifyForm" class="content-box login-box verify-box">
+            <p class="helper-text">Enviamos um código de verificação para:</p>
+            <p id="verificationEmail" class="verification-email"></p>
+
+            <div class="verification-code-box">
+                <span>Código:</span>
+                <strong id="verificationCode">---</strong>
+            </div>
+
+            <input id="verificationInput" type="text" placeholder="Digite o código de 6 dígitos" maxlength="6" required>
+            <button type="submit">Verificar e-mail</button>
+
+            <button type="button" class="secondary-btn" id="resendCodeBtn">Reenviar código</button>
+
+            <a href="login.html">
+                <button class="secondary-btn" type="button">Voltar para login</button>
+            </a>
+        </form>
+    </main>
+
+    <div class="theme-toggle-card" aria-label="Alternar tema">
+        <button class="theme-toggle" type="button" aria-label="Ativar modo escuro">
+            <span class="toggle-track">
+                <span class="toggle-thumb"></span>
+            </span>
+        </button>
+    </div>
+
+    <script>
+        const toggle = document.querySelector('.theme-toggle');
+        const body = document.body;
+
+        function applyTheme(isDark) {
+            body.classList.toggle('dark-mode', isDark);
+            toggle.setAttribute('aria-label', isDark ? 'Ativar modo claro' : 'Ativar modo escuro');
+            toggle.querySelector('.toggle-thumb').style.transform = isDark ? 'translateX(52px) rotate(180deg)' : 'translateX(0) rotate(0deg)';
+            toggle.querySelector('.toggle-thumb').style.background = isDark ? '#dbeafe' : '#fff9d9';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            applyTheme(true);
+        }
+
+        toggle.addEventListener('click', () => {
+            const isDark = !body.classList.contains('dark-mode');
+            applyTheme(isDark);
+        });
+
+        const params = new URLSearchParams(window.location.search);
+        const email = params.get('email') || '';
+        const pendingUser = JSON.parse(localStorage.getItem('pendingVerification') || 'null');
+        const verificationEmail = document.getElementById('verificationEmail');
+        const codeDisplay = document.getElementById('verificationCode');
+
+        if (email) {
+            verificationEmail.textContent = email;
+        }
+
+        if (pendingUser && pendingUser.email && pendingUser.verificationCode) {
+            codeDisplay.textContent = pendingUser.verificationCode;
+        } else {
+            codeDisplay.textContent = '000000';
+        }
+
+        document.getElementById('verifyForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const enteredCode = document.getElementById('verificationInput').value.trim();
+            const currentPendingUser = JSON.parse(localStorage.getItem('pendingVerification') || 'null');
+
+            if (!currentPendingUser) {
+                alert('Nenhuma verificação pendente foi encontrada.');
+                return;
+            }
+
+            if (enteredCode !== currentPendingUser.verificationCode) {
+                alert('Código incorreto. Tente novamente.');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('tutoriaUsers') || '[]');
+            const existingIndex = users.findIndex(user => user.email.toLowerCase() === currentPendingUser.email.toLowerCase());
+
+            const verifiedUser = {
+                name: currentPendingUser.name,
+                email: currentPendingUser.email,
+                password: currentPendingUser.password,
+                verified: true
+            };
+
+            if (existingIndex >= 0) {
+                users[existingIndex] = verifiedUser;
+            } else {
+                users.push(verifiedUser);
+            }
+
+            localStorage.setItem('tutoriaUsers', JSON.stringify(users));
+            localStorage.removeItem('pendingVerification');
+
+            alert('E-mail verificado com sucesso! Você já pode fazer login.');
+            window.location.href = 'login.html';
+        });
+
+        document.getElementById('resendCodeBtn').addEventListener('click', function () {
+            const currentPendingUser = JSON.parse(localStorage.getItem('pendingVerification') || 'null');
+            if (!currentPendingUser) {
+                alert('Não há nenhuma conta pendente para reenviar o código.');
+                return;
+            }
+
+            const newCode = String(Math.floor(100000 + Math.random() * 900000));
+            currentPendingUser.verificationCode = newCode;
+            localStorage.setItem('pendingVerification', JSON.stringify(currentPendingUser));
+            codeDisplay.textContent = newCode;
+            alert('Um novo código foi gerado para ' + currentPendingUser.email + '.');
+        });
+    </script>
+
+</body>
+
+</html>

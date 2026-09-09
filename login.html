@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - TutorIA</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+</head>
+
+<body>
+
+    <main class="login-wrapper">
+        <div class="title-box">
+            <h1>Entrar no TutorIA</h1>
+        </div>
+
+        <form id="loginForm" class="content-box login-box">
+            <input id="loginEmail" type="email" placeholder="Seu e-mail" required>
+            <input id="loginPassword" type="password" placeholder="Sua senha" required>
+            <p id="loginError" class="form-error" aria-live="polite"></p>
+
+            <label class="remember-me">
+                <input id="rememberMe" type="checkbox">
+                Lembrar-me
+            </label>
+
+            <button type="submit">Entrar</button>
+
+            <p>Ainda não tem uma conta?</p>
+
+            <a href="create-account.html">
+                <button class="secondary-btn" type="button">Criar conta</button>
+            </a>
+        </form>
+    </main>
+
+    <div class="theme-toggle-card" aria-label="Alternar tema">
+        <button class="theme-toggle" type="button" aria-label="Ativar modo escuro">
+            <span class="toggle-track">
+                <span class="toggle-thumb"></span>
+            </span>
+        </button>
+    </div>
+
+    <script>
+        const toggle = document.querySelector('.theme-toggle');
+        const body = document.body;
+
+        function applyTheme(isDark) {
+            body.classList.toggle('dark-mode', isDark);
+            toggle.setAttribute('aria-label', isDark ? 'Ativar modo claro' : 'Ativar modo escuro');
+            toggle.querySelector('.toggle-thumb').style.transform = isDark ? 'translateX(52px) rotate(180deg)' : 'translateX(0) rotate(0deg)';
+            toggle.querySelector('.toggle-thumb').style.background = isDark ? '#dbeafe' : '#fff9d9';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            applyTheme(true);
+        }
+
+        toggle.addEventListener('click', () => {
+            const isDark = !body.classList.contains('dark-mode');
+            applyTheme(isDark);
+        });
+
+        const form = document.getElementById('loginForm');
+        const rememberMeCheckbox = document.getElementById('rememberMe');
+        const loginError = document.getElementById('loginError');
+        const savedRememberedEmail = localStorage.getItem('rememberedEmail');
+
+        function showLoginError(message) {
+            loginError.textContent = message;
+            loginError.style.display = 'block';
+        }
+
+if (savedRememberedEmail) {
+    document.getElementById('loginEmail').value = savedRememberedEmail;
+    rememberMeCheckbox.checked = true;
+}
+
+        form.addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    loginError.textContent = '';
+    loginError.style.display = 'none';
+
+    if (!email || !password) {
+        alert('Preencha seu e-mail e sua senha.');
+        return;
+    }
+
+    try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+        if (error) {
+            console.error(error);
+            const errorText = error.message.toLowerCase();
+
+            if (errorText.includes('email not confirmed')) {
+                showLoginError('Confirme seu e-mail antes de entrar. Verifique sua caixa de entrada.');
+            } else if (errorText.includes('invalid login credentials')) {
+                showLoginError('E-mail ou senha inválidos.');
+            } else if (errorText.includes('rate limit')) {
+                showLoginError('Muitas tentativas. Aguarde alguns minutos e tente novamente.');
+            } else {
+                showLoginError('Não foi possível entrar: ' + error.message);
+            }
+            return;
+        }
+
+        if (rememberMeCheckbox.checked) {
+            localStorage.setItem(
+                'rememberedEmail',
+                email
+            );
+        } else {
+            localStorage.removeItem('rememberedEmail');
+        }
+
+        alert('Login realizado com sucesso!');
+
+        window.location.href = 'menu.html';
+
+    } catch (error) {
+        console.error(error);
+        showLoginError('Ocorreu um erro ao tentar entrar: ' + error.message);
+    }
+});
+    </script>
+
+</body>
+
+</html>

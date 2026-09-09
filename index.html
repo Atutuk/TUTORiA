@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TutorIA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="hero">
+
+        <div class="title-box">
+            <h1>TutorIA</h1>
+        </div>
+
+        <div class="content-box">
+            <p>
+                O TutorIA é uma plataforma de estudos criada para transformar a preparação para o vestibular em uma experiência mais inteligente, personalizada e eficiente. Com o auxílio da inteligência artificial, a plataforma entende o perfil de cada estudante, identifica suas dificuldades e adapta sua preparação de acordo com suas necessidades.
+                Mais do que oferecer questões e conteúdos, o TutorIA acompanha sua evolução, ajuda a organizar seus estudos e mostra onde você precisa melhorar. Nosso objetivo é simples: fazer com que cada hora de estudo tenha propósito e aproximar você da aprovação.
+            </p>
+
+            <a href="login.html">
+                <button>Começar</button>
+            </a>
+        </div>
+
+    </main>
+
+    <div class="theme-toggle-card" aria-label="Alternar tema">
+        <button class="theme-toggle" type="button" aria-label="Ativar modo escuro">
+            <span class="toggle-track">
+                <span class="toggle-thumb"></span>
+            </span>
+        </button>
+    </div>
+
+    <script>
+        const toggle = document.querySelector('.theme-toggle');
+        const body = document.body;
+
+        function applyTheme(isDark) {
+            body.classList.toggle('dark-mode', isDark);
+            toggle.setAttribute('aria-label', isDark ? 'Ativar modo claro' : 'Ativar modo escuro');
+            toggle.querySelector('.toggle-thumb').style.transform = isDark ? 'translateX(52px) rotate(180deg)' : 'translateX(0) rotate(0deg)';
+            toggle.querySelector('.toggle-thumb').style.background = isDark ? '#dbeafe' : '#fff9d9';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            applyTheme(true);
+        }
+
+        toggle.addEventListener('click', () => {
+            const isDark = !body.classList.contains('dark-mode');
+            applyTheme(isDark);
+        });
+    </script>
+
+</body>
+</html>
