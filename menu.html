@@ -35,6 +35,10 @@
                 <button id="nextButton" type="button">Próximo</button>
             </div>
 
+            <div class="tutorial-actions">
+                <button id="logoutButton" class="secondary-btn" type="button">Sair</button>
+            </div>
+
             <div class="tutorial-progress">
                 <span id="stepCounter">1 / 5</span>
             </div>
@@ -49,7 +53,24 @@
         </button>
     </div>
 
+    <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
     <script>
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.dataset.icon = type === 'success' ? '✓' : type === 'error' ? '!' : 'i';
+            toast.textContent = message;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 2800);
+        }
+
         (async function protectMenu() {
             const { data, error } = await supabaseClient.auth.getSession();
 
@@ -116,6 +137,7 @@
         const stepCounter = document.getElementById('stepCounter');
         const backButton = document.getElementById('backButton');
         const nextButton = document.getElementById('nextButton');
+        const logoutButton = document.getElementById('logoutButton');
 
         let currentStep = 0;
 
@@ -149,6 +171,25 @@
             } else {
                 window.location.href = 'index.html';
             }
+        });
+
+        logoutButton.addEventListener('click', async () => {
+            const { error } = await supabaseClient.auth.signOut();
+
+            if (error) {
+                console.error(error);
+                showToast('Não foi possível sair da conta.', 'error');
+                return;
+            }
+
+            localStorage.removeItem('loggedInUser');
+            localStorage.removeItem('rememberedEmail');
+
+            showToast('Você saiu da conta.', 'success');
+
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 700);
         });
 
         renderStep();

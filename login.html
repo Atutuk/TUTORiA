@@ -45,7 +45,24 @@
         </button>
     </div>
 
+    <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
     <script>
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.dataset.icon = type === 'success' ? '✓' : type === 'error' ? '!' : 'i';
+            toast.textContent = message;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 2800);
+        }
+
         const toggle = document.querySelector('.theme-toggle');
         const body = document.body;
 
@@ -92,7 +109,7 @@ if (savedRememberedEmail) {
     loginError.style.display = 'none';
 
     if (!email || !password) {
-        alert('Preencha seu e-mail e sua senha.');
+        showToast('Preencha seu e-mail e sua senha.', 'error');
         return;
     }
 
@@ -127,9 +144,11 @@ if (savedRememberedEmail) {
             localStorage.removeItem('rememberedEmail');
         }
 
-        alert('Login realizado com sucesso!');
+        showToast('Login realizado com sucesso!', 'success');
 
-        window.location.href = 'menu.html';
+        setTimeout(() => {
+            window.location.href = 'menu.html';
+        }, 900);
 
     } catch (error) {
         console.error(error);

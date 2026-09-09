@@ -54,24 +54,7 @@
         </button>
     </div>
 
-    <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
-
     <script>
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toastContainer');
-            if (!container) return;
-
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.dataset.icon = type === 'success' ? '✓' : type === 'error' ? '!' : 'i';
-            toast.textContent = message;
-            container.appendChild(toast);
-
-            setTimeout(() => {
-                toast.remove();
-            }, 2800);
-        }
-
         const toggle = document.querySelector('.theme-toggle');
         const body = document.body;
 
@@ -232,7 +215,6 @@
             email: email,
             password: password,
             options: {
-                emailRedirectTo: 'http://localhost:8000/login.html',
                 data: {
                     name: name
                 }
@@ -262,11 +244,13 @@
             return;
         }
 
-        showToast('Conta criada com sucesso! Confirme seu e-mail antes de entrar.', 'success');
+        alert(
+            'Conta criada com sucesso!\n\n' +
+            'Enviamos um e-mail de confirmação para ' + email + '.\n\n' +
+            'Confirme seu e-mail antes de entrar no TutorIA.'
+        );
 
-        setTimeout(() => {
-            window.location.href = 'login.html';
-        }, 1200);
+        window.location.href = 'login.html';
 
     } catch (error) {
         console.error(error);

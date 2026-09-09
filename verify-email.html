@@ -43,7 +43,24 @@
         </button>
     </div>
 
+    <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
     <script>
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.dataset.icon = type === 'success' ? '✓' : type === 'error' ? '!' : 'i';
+            toast.textContent = message;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 2800);
+        }
+
         const toggle = document.querySelector('.theme-toggle');
         const body = document.body;
 
@@ -88,12 +105,12 @@
             const currentPendingUser = JSON.parse(localStorage.getItem('pendingVerification') || 'null');
 
             if (!currentPendingUser) {
-                alert('Nenhuma verificação pendente foi encontrada.');
+                showToast('Nenhuma verificação pendente foi encontrada.', 'error');
                 return;
             }
 
             if (enteredCode !== currentPendingUser.verificationCode) {
-                alert('Código incorreto. Tente novamente.');
+                showToast('Código incorreto. Tente novamente.', 'error');
                 return;
             }
 
@@ -116,14 +133,16 @@
             localStorage.setItem('tutoriaUsers', JSON.stringify(users));
             localStorage.removeItem('pendingVerification');
 
-            alert('E-mail verificado com sucesso! Você já pode fazer login.');
-            window.location.href = 'login.html';
+            showToast('E-mail verificado com sucesso! Você já pode fazer login.', 'success');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 900);
         });
 
         document.getElementById('resendCodeBtn').addEventListener('click', function () {
             const currentPendingUser = JSON.parse(localStorage.getItem('pendingVerification') || 'null');
             if (!currentPendingUser) {
-                alert('Não há nenhuma conta pendente para reenviar o código.');
+                showToast('Não há nenhuma conta pendente para reenviar o código.', 'error');
                 return;
             }
 
@@ -131,7 +150,7 @@
             currentPendingUser.verificationCode = newCode;
             localStorage.setItem('pendingVerification', JSON.stringify(currentPendingUser));
             codeDisplay.textContent = newCode;
-            alert('Um novo código foi gerado para ' + currentPendingUser.email + '.');
+            showToast('Um novo código foi gerado para ' + currentPendingUser.email + '.', 'info');
         });
     </script>
 
