@@ -330,11 +330,11 @@ async function startPage() {
 
     const {
         data: {
-            user
+            session
         },
         error: userError
     } =
-        await supabaseClient.auth.getUser();
+        await supabaseClient.auth.getSession();
 
 
     if (userError) {
@@ -354,7 +354,7 @@ async function startPage() {
     }
 
 
-    if (!user) {
+    if (!session || !session.user) {
 
         window.location.href =
             "login.html";
@@ -364,7 +364,7 @@ async function startPage() {
     }
 
 
-    currentUser = user;
+    currentUser = session.user;
 
 
     console.log(
