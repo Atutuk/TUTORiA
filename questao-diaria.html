@@ -11,26 +11,23 @@
 
     <style>
         .daily-container {
-            max-width: 850px;
-            margin: 40px auto;
-            padding: 20px;
+            width: min(850px, 92%);
+            margin: 60px auto;
         }
 
         .daily-card {
-            background: white;
-            border-radius: 18px;
-            padding: 30px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            padding: 0;
         }
 
         .daily-title {
-            margin-bottom: 30px;
+            margin: 8px 0 40px;
+            font-size: clamp(2rem, 3vw, 3rem);
         }
 
         .question-content {
-            font-size: 20px;
+            font-size: 22px;
             line-height: 1.6;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             white-space: pre-wrap;
         }
 
@@ -38,88 +35,107 @@
         .resolution-image {
             max-width: 100%;
             display: block;
-            margin: 20px auto;
-            border-radius: 10px;
+            margin: 20px 0 30px;
+            border-radius: 12px;
+        }
+
+        #options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .option {
             width: 100%;
-            display: block;
-
-            padding: 16px;
-            margin: 12px 0;
-
-            border: 2px solid #ddd;
+            padding: 18px;
+            margin: 0;
+            border: 1px solid #cbd5e1;
             border-radius: 12px;
-
-            background: white;
-
-            font-size: 17px;
             text-align: left;
-
+            background: #ffffff;
+            color: #172b4d;
+            font-size: 16px;
             cursor: pointer;
-
-            transition: 0.2s;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
         }
 
         .option:hover {
-            border-color: #777;
+            transform: translateY(-2px);
+            border-color: #3b82f6;
+            background: #eff6ff;
         }
 
         .option.selected {
-            border-color: #111;
-            background: #f1f1f1;
+            border-width: 2px;
+            border-color: #2563eb;
+            background: #dbeafe;
+            color: #172b4d;
         }
 
         .main-button {
-            margin-top: 20px;
-
-            padding: 15px 25px;
-
-            border: none;
-            border-radius: 10px;
-
-            background: #111;
-            color: white;
-
+            margin-top: 25px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             font-size: 16px;
-
-            cursor: pointer;
         }
 
-        .main-button:hover {
-            opacity: 0.85;
+        .result,
+        .resolution {
+            margin-top: 25px;
+            padding: 25px;
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.72);
+            color: #172b4d;
         }
 
         .result {
-            display: none;
-
-            margin-top: 25px;
-            padding: 25px;
-
-            border-radius: 14px;
-
-            background: #f5f5f5;
+            text-align: center;
         }
 
-        .result h2 {
+        .result h2,
+        .resolution h2 {
             margin-top: 0;
         }
 
         .resolution {
-            display: none;
-
-            margin-top: 25px;
-            padding: 25px;
-
-            border-radius: 14px;
-
-            background: #f5f5f5;
+            text-align: left;
         }
 
         .error {
             color: #b00020;
             font-weight: bold;
+        }
+
+        body.dark-mode .daily-container,
+        body.dark-mode .daily-card,
+        body.dark-mode .daily-title,
+        body.dark-mode .question-content {
+            color: #f8fafc;
+        }
+
+        body.dark-mode .option {
+            border-color: #52627a;
+            background: #1e293b;
+            color: #f8fafc;
+        }
+
+        body.dark-mode .option:hover {
+            border-color: #60a5fa;
+            background: #263a5b;
+        }
+
+        body.dark-mode .option.selected {
+            border-color: #93c5fd;
+            background: #1d4ed8;
+            color: #ffffff;
+        }
+
+        body.dark-mode .result,
+        body.dark-mode .resolution {
+            border-color: rgba(148, 163, 184, 0.3);
+            background: rgba(15, 23, 42, 0.78);
+            color: #f8fafc;
         }
 
         .back-button {
@@ -281,6 +297,14 @@
 
 </div>
 
+<div class="theme-toggle-card" aria-label="Alternar tema">
+    <button class="theme-toggle" type="button" aria-label="Ativar modo escuro">
+        <span class="toggle-track">
+            <span class="toggle-thumb"></span>
+        </span>
+    </button>
+</div>
+
 
 
 <!-- SUPABASE -->
@@ -288,6 +312,26 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="supabase-config.js"></script>
+
+<script>
+    const themeToggle = document.querySelector('.theme-toggle');
+    const themeBody = document.body;
+
+    function applyTheme(isDark) {
+        themeBody.classList.toggle('dark-mode', isDark);
+        themeToggle.setAttribute(
+            'aria-label',
+            isDark ? 'Ativar modo claro' : 'Ativar modo escuro'
+        );
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+
+    applyTheme(localStorage.getItem('theme') === 'dark');
+
+    themeToggle.addEventListener('click', () => {
+        applyTheme(!themeBody.classList.contains('dark-mode'));
+    });
+</script>
 
 
 
