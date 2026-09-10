@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,156 +11,270 @@
 
     <style>
         .daily-container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 30px;
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 20px;
         }
 
-        .question-card {
+        .daily-card {
+            background: white;
+            border-radius: 18px;
             padding: 30px;
-            border-radius: 16px;
-            background: #fff;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .daily-title {
+            margin-bottom: 30px;
         }
 
         .question-content {
             font-size: 20px;
-            margin-bottom: 25px;
+            line-height: 1.6;
+            margin-bottom: 20px;
             white-space: pre-wrap;
         }
 
-        .option {
+        .question-image,
+        .resolution-image {
+            max-width: 100%;
             display: block;
-            width: 100%;
-            padding: 16px;
-            margin: 10px 0;
-            border: 2px solid #ddd;
+            margin: 20px auto;
             border-radius: 10px;
+        }
+
+        .option {
+            width: 100%;
+            display: block;
+
+            padding: 16px;
+            margin: 12px 0;
+
+            border: 2px solid #ddd;
+            border-radius: 12px;
+
             background: white;
-            cursor: pointer;
-            text-align: left;
+
             font-size: 17px;
+            text-align: left;
+
+            cursor: pointer;
+
+            transition: 0.2s;
         }
 
         .option:hover {
-            border-color: #555;
+            border-color: #777;
         }
 
         .option.selected {
-            border-color: #000;
-            background: #f2f2f2;
+            border-color: #111;
+            background: #f1f1f1;
         }
 
-        .action-button {
+        .main-button {
             margin-top: 20px;
+
             padding: 15px 25px;
+
             border: none;
             border-radius: 10px;
-            cursor: pointer;
+
+            background: #111;
+            color: white;
+
             font-size: 16px;
+
+            cursor: pointer;
+        }
+
+        .main-button:hover {
+            opacity: 0.85;
         }
 
         .result {
             display: none;
+
             margin-top: 25px;
+            padding: 25px;
+
+            border-radius: 14px;
+
+            background: #f5f5f5;
+        }
+
+        .result h2 {
+            margin-top: 0;
         }
 
         .resolution {
             display: none;
+
             margin-top: 25px;
-            padding: 20px;
-            border-radius: 12px;
+            padding: 25px;
+
+            border-radius: 14px;
+
             background: #f5f5f5;
+        }
+
+        .error {
+            color: #b00020;
+            font-weight: bold;
         }
 
         .back-button {
             margin-top: 25px;
         }
-
-        img {
-            max-width: 100%;
-            border-radius: 10px;
-            margin: 15px 0;
-        }
     </style>
+
 </head>
+
 
 <body>
 
 <div class="daily-container">
 
-    <div class="question-card">
+    <div class="daily-card">
 
-        <h1>Desafio do Dia</h1>
+        <h1 class="daily-title">
+            Desafio do Dia
+        </h1>
+
+
+        <!-- CARREGANDO -->
 
         <div id="loading">
             Carregando questão...
         </div>
 
+
+        <!-- QUESTÃO -->
+
         <div id="question-area" style="display:none;">
 
-            <div id="question-content" class="question-content"></div>
+            <div
+                id="question-content"
+                class="question-content">
+            </div>
 
-            <img id="question-image" style="display:none;">
+
+            <img
+                id="question-image"
+                class="question-image"
+                style="display:none;"
+            >
+
 
             <div id="options">
 
-                <button class="option" data-option="A"></button>
-                <button class="option" data-option="B"></button>
-                <button class="option" data-option="C"></button>
-                <button class="option" data-option="D"></button>
-                <button class="option" data-option="E"></button>
+                <button
+                    class="option"
+                    data-option="A">
+                </button>
+
+                <button
+                    class="option"
+                    data-option="B">
+                </button>
+
+                <button
+                    class="option"
+                    data-option="C">
+                </button>
+
+                <button
+                    class="option"
+                    data-option="D">
+                </button>
+
+                <button
+                    class="option"
+                    data-option="E">
+                </button>
 
             </div>
 
+
             <button
                 id="answer-button"
-                class="action-button">
+                class="main-button">
+
                 RESPONDER
+
             </button>
 
         </div>
+
 
         <!-- RESULTADO -->
 
-        <div id="result" class="result">
+        <div
+            id="result"
+            class="result">
 
-            <h2 id="result-title"></h2>
+            <h2 id="result-title">
+            </h2>
 
-            <p id="result-text"></p>
+            <p id="result-text">
+            </p>
+
 
             <button
                 id="resolution-button"
-                class="action-button">
+                class="main-button">
+
                 VER RESPOSTA E RESOLUÇÃO
+
             </button>
 
         </div>
 
+
         <!-- RESOLUÇÃO -->
 
-        <div id="resolution" class="resolution">
+        <div
+            id="resolution"
+            class="resolution">
 
-            <h2>Resposta correta</h2>
+            <h2>
+                Resposta correta
+            </h2>
 
-            <p id="correct-option"></p>
 
-            <p id="correct-answer"></p>
+            <p id="correct-option">
+            </p>
 
-            <h2>Resolução</h2>
 
-            <p id="resolution-content"></p>
+            <p id="correct-answer">
+            </p>
+
+
+            <h2>
+                Resolução
+            </h2>
+
+
+            <p id="resolution-content">
+            </p>
+
 
             <img
                 id="resolution-image"
-                style="display:none;">
+                class="resolution-image"
+                style="display:none;"
+            >
 
         </div>
 
+
+        <!-- VOLTAR -->
+
         <button
-            class="action-button back-button"
+            class="main-button back-button"
             onclick="window.location.href='index.html'">
+
             VOLTAR
+
         </button>
 
     </div>
@@ -167,48 +282,111 @@
 </div>
 
 
+
+<!-- SUPABASE -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase-config.js"></script>
+
+
 
 <script>
 
 let currentQuestion = null;
+
 let selectedOption = null;
 
-const loading = document.getElementById("loading");
-const questionArea = document.getElementById("question-area");
-const result = document.getElementById("result");
-const resolution = document.getElementById("resolution");
+let currentUser = null;
 
 
-// ================================
-// INICIAR
-// ================================
+
+const loading =
+    document.getElementById("loading");
+
+const questionArea =
+    document.getElementById("question-area");
+
+const result =
+    document.getElementById("result");
+
+const resolution =
+    document.getElementById("resolution");
+
+
+
+/* ==========================================
+   INICIAR
+========================================== */
 
 async function startPage() {
 
-    // Verifica usuário
+    console.log("Iniciando Questão do Dia...");
+
+
+    /* -------------------------
+       USUÁRIO
+    ------------------------- */
+
     const {
-        data: { user },
+        data: {
+            user
+        },
         error: userError
-    } = await supabaseClient.auth.getUser();
+    } =
+        await supabaseClient.auth.getUser();
 
-    if (userError || !user) {
 
-        window.location.href = "login.html";
+    if (userError) {
+
+        console.error(
+            "Erro ao pegar usuário:",
+            userError
+        );
+
+        loading.innerHTML =
+            `<p class="error">
+                Erro ao verificar usuário.
+            </p>`;
+
         return;
 
     }
 
 
-    // Busca questão ativa
+    if (!user) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+
+    currentUser = user;
+
+
+    console.log(
+        "Usuário:",
+        currentUser.id
+    );
+
+
+
+    /* -------------------------
+       BUSCAR QUESTÃO
+    ------------------------- */
+
     const {
         data: questions,
         error: questionError
-    } = await supabaseClient
+    } =
+        await supabaseClient
         .from("daily_questions")
         .select(`
             id,
+
             question_content,
             question_image_url,
 
@@ -239,10 +417,16 @@ async function startPage() {
 
     if (questionError) {
 
-        console.error(questionError);
+        console.error(
+            "Erro ao buscar questão:",
+            questionError
+        );
 
-        loading.innerText =
-            "Erro ao carregar a questão.";
+        loading.innerHTML =
+            `<p class="error">
+                Erro ao carregar questão.<br><br>
+                ${questionError.message}
+            </p>`;
 
         return;
 
@@ -251,7 +435,7 @@ async function startPage() {
 
     if (!questions || questions.length === 0) {
 
-        loading.innerText =
+        loading.innerHTML =
             "Nenhuma Questão do Dia disponível.";
 
         return;
@@ -259,112 +443,171 @@ async function startPage() {
     }
 
 
-    currentQuestion = questions[0];
+    currentQuestion =
+        questions[0];
 
 
-    // Verifica se o usuário já respondeu
+    console.log(
+        "Questão encontrada:",
+        currentQuestion.id
+    );
+
+
+
+    /* -------------------------
+       VERIFICAR RESPOSTA ANTERIOR
+    ------------------------- */
+
     const {
         data: previousAnswer,
-        error: answerError
-    } = await supabaseClient
+        error: previousAnswerError
+    } =
+        await supabaseClient
         .from("daily_question_answers")
         .select(`
             selected_option,
             is_correct
         `)
-        .eq("user_id", user.id)
-        .eq("question_id", currentQuestion.id)
+        .eq(
+            "user_id",
+            currentUser.id
+        )
+        .eq(
+            "question_id",
+            currentQuestion.id
+        )
         .maybeSingle();
 
 
-    if (answerError) {
+    if (previousAnswerError) {
 
-        console.error(answerError);
+        console.error(
+            "Erro ao verificar resposta:",
+            previousAnswerError
+        );
 
-        loading.innerText =
-            "Erro ao verificar sua resposta.";
+        loading.innerHTML =
+            `<p class="error">
+                Erro ao verificar sua resposta.<br><br>
+                ${previousAnswerError.message}
+            </p>`;
 
         return;
 
     }
 
 
-    // =================================
-    // JÁ RESPONDEU
-    // =================================
+
+    /* ==========================================
+       JÁ RESPONDEU
+    ========================================== */
 
     if (previousAnswer) {
 
-        loading.style.display = "none";
+        console.log(
+            "Usuário já respondeu."
+        );
 
-        questionArea.style.display = "none";
+
+        loading.style.display =
+            "none";
+
+        questionArea.style.display =
+            "none";
+
 
         showResult(
             previousAnswer.selected_option,
             previousAnswer.is_correct
         );
 
+
         return;
 
     }
 
 
-    // =================================
-    // AINDA NÃO RESPONDEU
-    // =================================
+
+    /* ==========================================
+       NÃO RESPONDEU
+    ========================================== */
+
+    console.log(
+        "Usuário ainda não respondeu."
+    );
+
 
     renderQuestion();
 
 }
 
 
-// ================================
-// MOSTRAR QUESTÃO
-// ================================
+
+/* ==========================================
+   RENDERIZAR QUESTÃO
+========================================== */
 
 function renderQuestion() {
 
-    loading.style.display = "none";
+    loading.style.display =
+        "none";
 
-    questionArea.style.display = "block";
-
-
-    document.getElementById("question-content")
-        .textContent = currentQuestion.question_content;
+    questionArea.style.display =
+        "block";
 
 
-    // Imagem da questão
-    if (currentQuestion.question_image_url) {
+    document
+        .getElementById("question-content")
+        .textContent =
+        currentQuestion.question_content;
 
-        const img =
-            document.getElementById("question-image");
 
-        img.src =
+
+    /* IMAGEM */
+
+    if (
+        currentQuestion.question_image_url
+    ) {
+
+        const image =
+            document.getElementById(
+                "question-image"
+            );
+
+        image.src =
             currentQuestion.question_image_url;
 
-        img.style.display = "block";
+        image.style.display =
+            "block";
 
     }
 
 
-    // Alternativas
+
+    /* ALTERNATIVAS */
 
     const options = {
 
         A: currentQuestion.option_a,
+
         B: currentQuestion.option_b,
+
         C: currentQuestion.option_c,
+
         D: currentQuestion.option_d,
+
         E: currentQuestion.option_e
 
     };
 
 
-    document.querySelectorAll(".option")
+    document
+        .querySelectorAll(".option")
         .forEach(button => {
 
             const letter =
                 button.dataset.option;
+
 
             button.textContent =
                 `${letter}) ${options[letter]}`;
@@ -374,121 +617,219 @@ function renderQuestion() {
 }
 
 
-// ================================
-// SELECIONAR ALTERNATIVA
-// ================================
 
-document.querySelectorAll(".option")
+/* ==========================================
+   SELECIONAR ALTERNATIVA
+========================================== */
+
+document
+    .querySelectorAll(".option")
     .forEach(button => {
 
-        button.addEventListener("click", () => {
+        button.addEventListener(
+            "click",
+            () => {
 
-            document.querySelectorAll(".option")
-                .forEach(btn =>
-                    btn.classList.remove("selected")
+
+                document
+                    .querySelectorAll(".option")
+                    .forEach(btn => {
+
+                        btn.classList.remove(
+                            "selected"
+                        );
+
+                    });
+
+
+                button.classList.add(
+                    "selected"
                 );
 
-            button.classList.add("selected");
 
-            selectedOption =
-                button.dataset.option;
-
-        });
-
-    });
+                selectedOption =
+                    button.dataset.option;
 
 
-// ================================
-// RESPONDER
-// ================================
+                console.log(
+                    "Alternativa selecionada:",
+                    selectedOption
+                );
 
-document.getElementById("answer-button")
-    .addEventListener("click", async () => {
-
-        if (!selectedOption) {
-
-            alert("Escolha uma alternativa primeiro.");
-
-            return;
-
-        }
-
-
-        const {
-            data: { user }
-        } = await supabaseClient.auth.getUser();
-
-
-        const isCorrect =
-            selectedOption ===
-            currentQuestion.correct_option;
-
-
-        // Salva resposta
-        const {
-            error
-        } = await supabaseClient
-            .from("daily_question_answers")
-            .insert({
-
-                user_id: user.id,
-
-                question_id:
-                    currentQuestion.id,
-
-                selected_option:
-                    selectedOption,
-
-                is_correct:
-                    isCorrect
-
-            });
-
-
-        if (error) {
-
-            console.error(error);
-
-            alert(
-                "Não foi possível salvar sua resposta."
-            );
-
-            return;
-
-        }
-
-
-        // Esconde questão
-        questionArea.style.display =
-            "none";
-
-
-        // Mostra resultado
-        showResult(
-            selectedOption,
-            isCorrect
+            }
         );
 
     });
 
 
-// ================================
-// MOSTRAR RESULTADO
-// ================================
+
+/* ==========================================
+   RESPONDER
+========================================== */
+
+document
+    .getElementById("answer-button")
+    .addEventListener(
+        "click",
+        saveAnswer
+    );
+
+
+
+async function saveAnswer() {
+
+    /* -------------------------
+       VERIFICAR ALTERNATIVA
+    ------------------------- */
+
+    if (!selectedOption) {
+
+        alert(
+            "Escolha uma alternativa primeiro."
+        );
+
+        return;
+
+    }
+
+
+    console.log(
+        "Tentando salvar resposta..."
+    );
+
+
+
+    /* -------------------------
+       CALCULAR ACERTO
+    ------------------------- */
+
+    const isCorrect =
+        selectedOption ===
+        currentQuestion.correct_option;
+
+
+    console.log(
+        "Correta:",
+        currentQuestion.correct_option
+    );
+
+    console.log(
+        "Selecionada:",
+        selectedOption
+    );
+
+    console.log(
+        "Acertou:",
+        isCorrect
+    );
+
+
+
+    /* -------------------------
+       SALVAR NO SUPABASE
+    ------------------------- */
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+        .from("daily_question_answers")
+        .insert({
+
+            user_id:
+                currentUser.id,
+
+            question_id:
+                currentQuestion.id,
+
+            selected_option:
+                selectedOption,
+
+            is_correct:
+                isCorrect
+
+        })
+        .select();
+
+
+
+    /* -------------------------
+       ERRO
+    ------------------------- */
+
+    if (error) {
+
+        console.error(
+            "ERRO AO SALVAR:",
+            error
+        );
+
+
+        alert(
+            "Erro ao salvar sua resposta:\n\n" +
+            error.message
+        );
+
+
+        return;
+
+    }
+
+
+
+    console.log(
+        "Resposta salva:",
+        data
+    );
+
+
+
+    /* -------------------------
+       ESCONDER QUESTÃO
+    ------------------------- */
+
+    questionArea.style.display =
+        "none";
+
+
+
+    /* -------------------------
+       MOSTRAR RESULTADO
+    ------------------------- */
+
+    showResult(
+        selectedOption,
+        isCorrect
+    );
+
+}
+
+
+
+/* ==========================================
+   MOSTRAR RESULTADO
+========================================== */
 
 function showResult(
     userOption,
     isCorrect
 ) {
 
-    result.style.display = "block";
+    result.style.display =
+        "block";
 
 
     const title =
-        document.getElementById("result-title");
+        document.getElementById(
+            "result-title"
+        );
 
     const text =
-        document.getElementById("result-text");
+        document.getElementById(
+            "result-text"
+        );
+
 
 
     if (isCorrect) {
@@ -499,7 +840,9 @@ function showResult(
         text.textContent =
             `Você marcou a alternativa ${userOption}.`;
 
-    } else {
+    }
+
+    else {
 
         title.textContent =
             "Você errou.";
@@ -512,68 +855,90 @@ function showResult(
 }
 
 
-// ================================
-// VER RESPOSTA + RESOLUÇÃO
-// ================================
 
-document.getElementById("resolution-button")
-    .addEventListener("click", () => {
+/* ==========================================
+   MOSTRAR RESPOSTA E RESOLUÇÃO
+========================================== */
 
-        resolution.style.display = "block";
-
-
-        const options = {
-
-            A: currentQuestion.option_a,
-            B: currentQuestion.option_b,
-            C: currentQuestion.option_c,
-            D: currentQuestion.option_d,
-            E: currentQuestion.option_e
-
-        };
+document
+    .getElementById("resolution-button")
+    .addEventListener(
+        "click",
+        showResolution
+    );
 
 
-        // Alternativa correta
 
-        document.getElementById("correct-option")
-            .textContent =
-            `Alternativa ${currentQuestion.correct_option}`;
+function showResolution() {
 
-
-        // Resposta
-
-        document.getElementById("correct-answer")
-            .textContent =
-            `Resposta: ${currentQuestion.correct_answer}`;
+    resolution.style.display =
+        "block";
 
 
-        // Resolução
 
-        document.getElementById("resolution-content")
-            .textContent =
-            currentQuestion.resolution_content ||
-            "A resolução desta questão ainda não foi cadastrada.";
+    /* -------------------------
+       ALTERNATIVA CORRETA
+    ------------------------- */
 
-
-        // Imagem da resolução
-
-        if (currentQuestion.resolution_image_url) {
-
-            const img =
-                document.getElementById("resolution-image");
-
-            img.src =
-                currentQuestion.resolution_image_url;
-
-            img.style.display =
-                "block";
-
-        }
-
-    });
+    document
+        .getElementById("correct-option")
+        .textContent =
+        `Alternativa correta: ${currentQuestion.correct_option}`;
 
 
-// Inicia página
+
+    /* -------------------------
+       RESPOSTA
+    ------------------------- */
+
+    document
+        .getElementById("correct-answer")
+        .textContent =
+        `Resposta: ${currentQuestion.correct_answer}`;
+
+
+
+    /* -------------------------
+       RESOLUÇÃO
+    ------------------------- */
+
+    document
+        .getElementById("resolution-content")
+        .textContent =
+        currentQuestion.resolution_content ||
+        "A resolução ainda não foi cadastrada.";
+
+
+
+    /* -------------------------
+       IMAGEM DA RESOLUÇÃO
+    ------------------------- */
+
+    if (
+        currentQuestion.resolution_image_url
+    ) {
+
+        const image =
+            document.getElementById(
+                "resolution-image"
+            );
+
+        image.src =
+            currentQuestion.resolution_image_url;
+
+        image.style.display =
+            "block";
+
+    }
+
+}
+
+
+
+/* ==========================================
+   INICIAR
+========================================== */
+
 startPage();
 
 </script>
