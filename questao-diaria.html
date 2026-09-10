@@ -160,6 +160,30 @@
         .back-button {
             margin-top: 25px;
         }
+
+        .daily-container + .theme-toggle-card {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 20;
+            margin-top: 0;
+        }
+
+        @media (max-width: 720px) {
+            .daily-card {
+                padding: 26px 22px;
+            }
+
+            .daily-title {
+                margin: -26px -22px 28px;
+                padding: 24px 22px;
+            }
+
+            .daily-container + .theme-toggle-card {
+                right: 14px;
+                bottom: 14px;
+            }
+        }
     </style>
 
 </head>
@@ -326,12 +350,6 @@
 
 
 
-<!-- SUPABASE -->
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script src="supabase-config.js"></script>
-
 <script>
     const themeToggle = document.querySelector('.theme-toggle');
     const themeBody = document.body;
@@ -351,6 +369,12 @@
         applyTheme(!themeBody.classList.contains('dark-mode'));
     });
 </script>
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-config.js"></script>
 
 
 
