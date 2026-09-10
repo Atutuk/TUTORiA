@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Questão do Dia | TutorIA</title>
-
     <link rel="stylesheet" href="style.css">
-
     <style>
         .daily-question-container {
             width: min(850px, 92%);
@@ -51,28 +48,30 @@
             width: 100%;
             padding: 18px;
             text-align: left;
-
-            border: 1px solid #ccc;
+            border: 1px solid #cbd5e1;
             border-radius: 12px;
-
-            background: transparent;
+            background: #ffffff;
+            color: #172b4d;
             cursor: pointer;
-
             font-size: 16px;
-
-            transition:
-                transform 0.2s ease,
-                border-color 0.2s ease,
-                background 0.2s ease;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
         }
 
         .answer-option:hover {
             transform: translateY(-2px);
+            border-color: #3b82f6;
+            background: #eff6ff;
         }
 
         .answer-option.selected {
             border-width: 2px;
+            border-color: #2563eb;
+            background: #dbeafe;
+            color: #172b4d;
         }
+
+        .answer-option strong { color: #1d4ed8; margin-right: 8px; }
+        .answer-option span { color: inherit; }
 
         .option-image {
             display: none;
@@ -81,17 +80,33 @@
             border-radius: 8px;
         }
 
+        body.dark-mode .daily-question-container { color: #f8fafc; }
+        body.dark-mode .daily-question-header h1,
+        body.dark-mode #questionText,
+        body.dark-mode #resultTitle,
+        body.dark-mode #resultMessage,
+        body.dark-mode .answer-summary,
+        body.dark-mode #correctAnswerArea,
+        body.dark-mode #resolutionArea { color: #f8fafc; }
+        body.dark-mode .daily-label { color: #bfdbfe; }
+        body.dark-mode .answer-option {
+            border-color: #52627a;
+            background: #1e293b;
+            color: #f8fafc;
+        }
+        body.dark-mode .answer-option:hover { border-color: #60a5fa; background: #263a5b; }
+        body.dark-mode .answer-option.selected { border-color: #93c5fd; background: #1d4ed8; color: #ffffff; }
+        body.dark-mode .answer-option strong { color: #bfdbfe; }
+        body.dark-mode .answer-option.selected strong { color: #ffffff; }
+
         #answerButton,
         #showAnswerButton,
         #backButton {
             margin-top: 25px;
             padding: 14px 28px;
-
             border: none;
             border-radius: 10px;
-
             cursor: pointer;
-
             font-size: 16px;
             font-weight: 600;
         }
@@ -295,11 +310,42 @@
 
     </main>
 
+    <div class="theme-toggle-card" aria-label="Alternar tema">
+        <button class="theme-toggle" type="button" aria-label="Ativar modo escuro">
+            <span class="toggle-track">
+                <span class="toggle-thumb"></span>
+            </span>
+        </button>
+    </div>
+
 
     <!-- SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script src="supabase-config.js"></script>
+
+    <script>
+        const themeToggle = document.querySelector('.theme-toggle');
+        const themeBody = document.body;
+
+        function applyTheme(isDark) {
+            themeBody.classList.toggle('dark-mode', isDark);
+            themeToggle.setAttribute('aria-label', isDark ? 'Ativar modo claro' : 'Ativar modo escuro');
+
+            const thumb = themeToggle.querySelector('.toggle-thumb');
+            thumb.style.transform = isDark ? 'translateX(52px) rotate(180deg)' : 'translateX(0) rotate(0deg)';
+            thumb.style.background = isDark ? '#dbeafe' : '#fff9d9';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        if (localStorage.getItem('theme') === 'dark') {
+            applyTheme(true);
+        }
+
+        themeToggle.addEventListener('click', () => {
+            applyTheme(!themeBody.classList.contains('dark-mode'));
+        });
+    </script>
 
 
     <script>
@@ -362,8 +408,6 @@
 
                 return;
             }
-
-
             if (!data || data.length === 0) {
 
                 document.getElementById("questionText").textContent =
