@@ -790,51 +790,75 @@ body.dark-mode .feature-row span { background: rgba(96, 165, 250, .1); }
 @media (max-width: 720px) {
     .hero .content-box { padding: 28px 26px; }
 }
+
 .daily-question-link {
-    text-decoration: none;
+    grid-column: 1 / -1;
     color: inherit;
+    text-decoration: none;
+    animation: reveal .75s .12s ease both;
 }
 
 .daily-question-card {
-    width: min(850px, 92%);
-    margin: 40px auto;
-    padding: 30px;
-
-    border: 1px solid #ccc;
-    border-radius: 18px;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.2s ease,
-        border-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    padding: 24px 30px;
+    border: 1px solid rgba(59, 130, 246, .2);
+    border-radius: 24px;
+    background: linear-gradient(110deg, rgba(255, 255, 255, .96), rgba(239, 246, 255, .96));
+    box-shadow: 0 16px 36px rgba(76, 95, 150, .12);
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
 }
 
-.daily-question-card:hover {
-    transform: translateY(-3px);
+.daily-question-link:hover .daily-question-card {
+    transform: translateY(-4px);
+    border-color: rgba(59, 130, 246, .42);
+    box-shadow: 0 22px 42px rgba(76, 95, 150, .18);
 }
 
-.daily-question-card span {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 2px;
+.daily-question-copy { min-width: 0; }
+.daily-question-label {
+    display: inline-block;
+    margin-bottom: 7px;
+    color: #7c3aed;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .15em;
 }
 
 .daily-question-card h2 {
-    margin: 10px 0;
+    margin: 0 0 6px;
+    color: #172b4d;
+    font-size: clamp(1.35rem, 3vw, 1.8rem);
 }
 
 .daily-question-card p {
-    margin-bottom: 20px;
+    margin: 0;
+    color: #52657f;
+    font-size: .95rem;
 }
 
 .daily-question-card button {
-    padding: 12px 20px;
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 13px 20px;
+    font-size: .92rem;
+    text-transform: none;
+}
 
-    border: none;
-    border-radius: 10px;
+.daily-question-card button span { margin-left: 6px; }
 
-    cursor: pointer;
+body.dark-mode .daily-question-card {
+    background: linear-gradient(110deg, rgba(15, 23, 42, .94), rgba(30, 41, 72, .94));
+    border-color: rgba(96, 165, 250, .25);
+}
 
-    font-weight: 600;
+body.dark-mode .daily-question-card h2 { color: #f8fafc; }
+body.dark-mode .daily-question-card p { color: #cbd5e1; }
+body.dark-mode .daily-question-label { color: #c4b5fd; }
+
+@media (max-width: 720px) {
+    .daily-question-card { align-items: flex-start; flex-direction: column; gap: 14px; padding: 22px; }
+    .daily-question-card button { width: 100%; }
 }
