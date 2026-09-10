@@ -797,9 +797,9 @@ body::after { background: #d9edff; opacity: .42; }
 .daily-particles span:nth-child(20) { top: 31%; left: 88%; animation-delay: -6s; }
 
 @keyframes daily-particle-drift {
-    0% { transform: translate3d(var(--repel-x, 0px), var(--repel-y, 0px), 0) rotate(0deg); }
-    50% { transform: translate3d(calc(62px + var(--repel-x, 0px)), calc(-46px + var(--repel-y, 0px)), 0) rotate(140deg); }
-    100% { transform: translate3d(calc(-48px + var(--repel-x, 0px)), calc(58px + var(--repel-y, 0px)), 0) rotate(280deg); }
+    0% { transform: translate3d(var(--flow-x, 0px), var(--flow-y, 0px), 0) rotate(0deg); }
+    50% { transform: translate3d(calc(62px + var(--flow-x, 0px)), calc(-46px + var(--flow-y, 0px)), 0) rotate(140deg); }
+    100% { transform: translate3d(calc(-48px + var(--flow-x, 0px)), calc(58px + var(--flow-y, 0px)), 0) rotate(280deg); }
 }
 
 body.dark-mode .daily-particles span { background: rgba(147, 197, 253, 0.5); }
